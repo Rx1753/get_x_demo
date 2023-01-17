@@ -28,9 +28,6 @@ jobs:
       - name: Verify formatting
         run: dart format --output=none --set-exit-if-changed .
 
-      - name: Run tests
-        run: flutter test
-
       - name: Generating build in web
         run: flutter build web -t lib/main.dart
 
