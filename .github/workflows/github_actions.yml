@@ -1,0 +1,39 @@
+# This workflow uses actions that are not certified by GitHub.
+# They are provided by a third-party and are governed by
+# separate terms of service, privacy policy, and support
+# documentation.
+
+name: Dart
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: subosito/flutter-action@v1
+
+      - name: clean
+        run: flutter clean
+
+      - name: get-packages
+        run: flutter pub get
+
+      - name: Verify formatting
+        run: dart format --output=none --set-exit-if-changed .
+
+      - name: Run tests
+        run: flutter test
+
+      - name: Generating build in web
+        run: flutter build web -t lib/main.dart
+
+      - name: Generating build in android release
+        run: flutter build apk --release --target=lib/main.dart
+
