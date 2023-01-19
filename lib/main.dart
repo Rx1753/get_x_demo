@@ -1,45 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:get_x_demo/demo2/lang/translation_service.dart';
+import 'package:get_x_demo/demo2/routes/app_pages.dart';
+import 'package:get_x_demo/demo2/shared/logger/logger_utils.dart';
 
 void main() {
-  runApp(GetMaterialApp(
-    home: Home(),
-  ));
+  runApp(const MyApp());
 }
 
-class Controller extends GetxController {
-  var count = 0.obs;
 
-  increment() => count++;
-}
-
-class Home extends StatelessWidget {
-  final Controller c = Get.put(Controller());
+class MyApp extends StatelessWidget {
+  const MyApp({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(title: Obx(() => Text('Clicks :: ${c.count}'))),
-      body: Center(
-          child: ElevatedButton(
-        child: const Text('Go to Other'),
-        onPressed: () {
-          Get.to(Other());
-        },
-      )),
-      floatingActionButton: FloatingActionButton(
-        onPressed: c.increment,
-        child: const Icon(Icons.add),
-      ),
+    return GetMaterialApp(
+      debugShowCheckedModeBanner: false,
+      enableLog: true,
+      logWriterCallback: Logger.write,
+      initialRoute: AppPages.INITIAL,
+      getPages: AppPages.routes,
+      locale: TranslationService.locale,
+      fallbackLocale: TranslationService.fallbackLocale,
+      translations: TranslationService(),
     );
-  }
-}
-
-class Other extends StatelessWidget {
-  final Controller c = Get.find();
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(body: Center(child: Text("${c.count}")));
   }
 }
